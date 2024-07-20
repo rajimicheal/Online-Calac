@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        /* Basic styling for the calculator */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #display {
+            width: 95%;
+            padding: 10px;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        button {
+            width: 25%;
+            padding: 20px;
+            font-size: 1.2em;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #eee;
+        }
+        button.operator {
+            background-color: #f0ad4e;
+            color: white;
+        }
+        button.equal {
+            background-color: #5cb85c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- This is the form for the calculator -->
+    <form action="">
+        <!-- This is the display area where numbers and results will be shown -->
+        <input type="text" id="display" readonly>
+        <!-- These are the buttons for the numbers and operations -->
+        <div class="button-container">
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="appendNumber(0)">0</button>
+            <button onclick="setOperator('*')" class="operator">*</button>
+            <button onclick="setOperator('+')" class="operator">+</button>
+            <button onclick="setOperator('-')" class="operator">-</button>
+            <button onclick="setOperator('/')" class="operator">/</button>
+            <button onclick="calculate()" class="equal">=</button>
+        </div>
+    </form>
+
+    <!-- This is the JavaScript code to handle button clicks and operations -->
+    <script>
+        let currentNumber = '';
+        let previousNumber = '';
+        let operator = '';
+
+        // This function adds the clicked number to the display
+        function appendNumber(number) {
+            currentNumber += number;
+            updateDisplay();
+            event.preventDefault();
+        }
+
+        // This function sets the operator (+, *) for the calculation
+        function setOperator(op) {
+            if (currentNumber === '') return;
+            if (previousNumber !== '') {
+                calculate();
+            }
+            operator = op;
+            previousNumber = currentNumber;
+            currentNumber = '';
+            event.preventDefault();
+        }
+
+        // This function updates the display
+        function updateDisplay() {
+            let display = document.getElementById('display');
+            display.value = currentNumber;
+        }
+
+        // This function performs the calculation
+        function calculate() {
+            let result;
+            const prev = parseFloat(previousNumber);
+            const current = parseFloat(currentNumber);
+
+            if (isNaN(prev) || isNaN(current)) return;
+
+            switch (operator) {
+                case '+':
+                    result = prev + current;
+                    break;
+                case '*':
+                    result = prev * current;
+                    break;
+                case '/':
+                    result = prev / current;
+                    break;
+                case '-':
+                    result = prev - current;
+                    break;
+                default:
+                    return;
+            }
+
+            currentNumber = result;
+            operator = '';
+            previousNumber = '';
+            updateDisplay();
+            event.preventDefault();
+        }
+
+        // This function clears the display and resets the calculation
+        function clearDisplay() {
+            currentNumber = '';
+            previousNumber = '';
+            operator = '';
+            updateDisplay();
+            event.preventDefault();
+        }
+    </script>
+</body>
+</html>
